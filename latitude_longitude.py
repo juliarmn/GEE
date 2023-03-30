@@ -13,35 +13,26 @@ def cloud_mask(image):
 
 # função para aplicar as máscaras
 def apply_masks(image):
-    
     # imagem vazia:
     blank = ee.Image.constant(0).selfMask()
-    
     # máscara de água
     agua = blank.updateMask(water_mask(image).Not()).rename('agua')
-    
     # imagem apenas com nuvens: se não tiver nuvem, ela ficará branca
     nuvem = blank.updateMask(cloud_mask(image).Not()).rename('nuvem')
-    
     # Remover as nuvens:
     sem_nuvem = blank.updateMask(cloud_mask(image)).rename('sem_nuvem')
-    
     # NDVI
     ndvi = image.expression('(nir - red) / (nir + red)',{'nir':image.select('B5'),'red':image.select('B4')}).rename('ndvi')
-    
     # Adiciona as bandas
     return image.addBands([ndvi,agua,nuvem,sem_nuvem])
 
 # Máscara em banda específica
 def band_mask(image, band, origin, dest):
-    
     # Banda de origem será direcionada para a de destino
-    image_with_masks = image.select(origin).updateMask(image.select(band)).rename(dest)
-    
+    image_with_masks = image.select(origin).updateMask(image.select(band)).rename(dest) 
     # imagem em branco
     image_with_masks = ee.Image.constant(0).selfMask()
     image_with_masks = image_with_masks.blend(image_with_masks).rename(dest)
-    
     # Retornar a image com a nova banda nomeada com a string da banda_destino
     return image.addBands([image_with_masks])
 
