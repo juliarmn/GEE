@@ -1,7 +1,7 @@
 import ee
 ee.Authenticate()
 ee.Initialize()
-coordenadas =  "-3.10719,  -60.0261, -3.9000, -64.5000"
+coordenadas =  "-68.43514524047421,  -58.65054484365196, 0.4165458387606975, -5.707281211922151"
 x1, y1, x2, y2 = coordenadas.split(",")
 geometria = geometry = ee.Geometry.Polygon (
                                             [
