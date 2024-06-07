@@ -4,9 +4,7 @@
 def agua(imagem):
     pixel = imagem.select('qa')
     return pixel.bitwiseAnd(1 << 2).eq(0)
-
-#Função máscara de nuvem
+    
 def nuvem(imagem):
     pixel = imagem.select('qa')
     return pixel.bitwiseAnd(1 << 3).eq(0) and (pixel.bitwiseAnd(1 << 5).eq(0)) and (pixel.bitwiseAnd(1 << 6).eq(0)) and (pixel.bitwiseAnd(1 << 7).eq(0))
-#Código acima retirado de fontes da internet
