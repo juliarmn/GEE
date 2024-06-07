@@ -1,12 +1,11 @@
 vermelho = 'B4'
 infra = 'B5'
-#colecao e geometria definidos anteriormente
+
 def ndvi(imagem):
     ndvi = imagem.expression('(infra - vermelho) / (infra + vermelho)', {'infra': imagem.select(infra), 'vermelho': imagem.select(vermelho)}).rename('ndvi')
     return imagem.addBands(ndvi)
 
 colecao.map(ndvi)
-#extrair a imagem mediana da coleção:
 imagem = colecao.median()
 imagem_corte = imagem.clipToBoundsAndScale(geometry=geometria,scale=40)
 imagem_corte = ndvi(imagem_corte)
